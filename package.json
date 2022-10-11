@@ -1,0 +1,19 @@
+{
+  "name": "basic-informational-site",
+  "version": "1.0.0",
+  "description": "First node project for The Odin Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lemonadee71/basic-informational-site.git"
+  },
+  "author": "Shin Andrei Riego",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lemonadee71/basic-informational-site/issues"
+  },
+  "homepage": "https://github.com/lemonadee71/basic-informational-site#readme"
+}
