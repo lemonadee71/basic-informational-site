@@ -1,38 +1,21 @@
 const fs = require('fs/promises');
 const http = require('http');
 const path = require('path');
+const express = require('express');
+
+const app = express();
+app.use(require('morgan')('dev'));
+app.use(express.static('public'));
 
 const getPage = async (url) => {
-  const filename = url === '' ? 'index.html' : url + '.html';
+  const filename = url ? url + '.html' : 'index.html';
 
   return fs.readFile(path.join('pages', filename), 'utf-8');
 };
 
-const getJs = async (url) => fs.readFile(url, 'utf-8');
+app.get('/', async (req, res) => res.send(await getPage()));
+app.get('/about', async (req, res) => res.send(await getPage('about')));
+app.get('/contact', async (req, res) => res.send(await getPage('contact')));
+app.use(async (req, res) => res.status(404).send(await getPage('404')));
 
-const server = http.createServer(async (req, res) => {
-  console.log(req.url);
-  const url = req.url.slice(1);
-
-  if (url.endsWith('.js')) {
-    res.setHeader('Content-Type', 'text/javascript');
-    res.end(await getJs(url));
-  } else {
-    res.setHeader('Content-Type', 'text/html');
-
-    let page;
-    try {
-      page = await getPage(url);
-    } catch (error) {
-      res.statusCode = 404;
-      res.statusMessage = 'Not found';
-      page = await getPage('404');
-    }
-
-    res.end(page);
-  }
-});
-
-server.listen(8080, '127.0.0.1', () => {
-  console.log('Server is listening to port 8080');
-});
+app.listen(8080, () => console.log('Server is listening to port 8080'));
